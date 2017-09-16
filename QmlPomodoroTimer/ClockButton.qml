@@ -3,16 +3,16 @@ import QtQuick 2.0
 Item {
 
     id: button
-    width: 30
-    height: 60
+    width: 68
+    height: 43
     property alias buttonText: buttonName.text
     property color color: "blue"
     property color hoverColor: "green"
-    property color pressColor: "white"
+    property color pressColor: "red"
     property int fontSize: 10
     property int borderWidth: 1
-    property int borderRadius: 2
-    scale: state === "Pressed" ? 0.9 : 1.0
+    property int borderRadius: 5
+    scale: state === "Pressed" ? 0.6 : 1.0
     onEnabledChanged: state = ""
     signal clicked
 
@@ -40,10 +40,13 @@ Item {
         anchors.centerIn: parent
     }
 
+
+
     // modify color of the button in different button states
     states: [
         State {
-            name: "Hoovering"
+            name: "Hovering"
+            when: mouseArea.containsMouse
             PropertyChanges {
                 target: rectangleButton
                 color: hoverColor
@@ -53,7 +56,7 @@ Item {
             name: "Pressed"
             PropertyChanges {
                 target: rectangleButton
-                color: hoverColor
+                color: pressColor
             }
         }
     ]
@@ -62,29 +65,36 @@ Item {
     transitions: [
         Transition {
             from: ""
-            to: "Hoovering"
+            to: "Hovering"
             ColorAnimation { duration: 200 }
         },
         Transition {
             from: "*"
             to: "Pressed"
-            ColorAnimation { duration: 20 }
+            ColorAnimation { duration: 200 }
         }
     ]
 
     // Mouse area to react on click events
     MouseArea {
+        id: mouseArea
+        anchors.fill: parent
         hoverEnabled: true
-        anchors.fill: button
-        onEntered: { button.state='Hovering'}
-        onExited: { button.state=''}
+        onEntered: { button.state="Hovering"}
+        onExited: { button.state=""}
         onClicked: { button.clicked();}
         onPressed: { button.state="Pressed" }
         onReleased: {
             if (containsMouse)
+            {
               button.state="Hovering";
+            }
             else
+            {
               button.state="";
+            }
         }
     }
+
+    onClicked: console.log("Clicked!")
 }

@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
+        <file>ClockButton.qml</file>
         <file>main.qml</file>
-        <file>MainForm.ui.qml</file>
+        <file>PomodoroTimer.qml</file>
     </qresource>
 </RCC>

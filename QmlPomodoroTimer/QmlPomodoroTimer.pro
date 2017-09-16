@@ -30,5 +30,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    Timer.qml \
-    ClockButton.qml
+    ClockButton.qml \
+    ../../../pomodoro_main.png \
+    main.qml \
+    PomodoroTimer.qml
