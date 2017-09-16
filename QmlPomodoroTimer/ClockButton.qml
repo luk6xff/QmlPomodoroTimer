@@ -6,14 +6,23 @@ Item {
     width: 68
     height: 43
     property alias buttonText: buttonName.text
-    property color color: "blue"
-    property color hoverColor: "green"
-    property color pressColor: "red"
+    property color baseColor: "#7e87f8"
+    property color hoverColor: "#08e992"
+    property color pressColor: "#db1f60"
     property int fontSize: 10
     property int borderWidth: 1
     property int borderRadius: 5
     scale: state === "Pressed" ? 0.6 : 1.0
-    onEnabledChanged: state = ""
+    state: ""
+    onEnabledChanged:
+    {
+        state = ""
+        color: baseColor
+        if (enabled == false)
+        {
+            color: "grey"
+        }
+    }
     signal clicked
 
     // scale animation
@@ -27,9 +36,9 @@ Item {
     // Rectangle to draw the button
     Rectangle {
         id: rectangleButton
+        color: baseColor
         anchors.fill: parent
         radius: borderRadius
-        color: button.enabled ? button.color : "grey"
         border.width: borderWidth
         border.color: "black"
     }
@@ -64,7 +73,7 @@ Item {
     // transitions between states
     transitions: [
         Transition {
-            from: ""
+            from: "*"
             to: "Hovering"
             ColorAnimation { duration: 200 }
         },
@@ -78,6 +87,7 @@ Item {
     // Mouse area to react on click events
     MouseArea {
         id: mouseArea
+        antialiasing: true
         anchors.fill: parent
         hoverEnabled: true
         onEntered: { button.state="Hovering"}
@@ -96,5 +106,8 @@ Item {
         }
     }
 
-    onClicked: console.log("Clicked!")
+    onClicked:
+    {
+        //to be overriden
+    }
 }

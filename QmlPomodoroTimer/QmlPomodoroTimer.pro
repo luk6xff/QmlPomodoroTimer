@@ -33,4 +33,6 @@ DISTFILES += \
     ClockButton.qml \
     ../../../pomodoro_main.png \
     main.qml \
-    PomodoroTimer.qml
+    PomodoroTimer.qml \
+    Clock.qml \
+    PomodoroInterval.qml

@@ -13,13 +13,13 @@ Window
       debug(width)
     }
 
-    //flags: Qt.ToolTip | Qt.FramelessWindowHint | Qt.WA_TranslucentBackground
-    //color: "#00000000"
-    title: qsTr("QmlPomodoroTime")
+    flags: Qt.ToolTip | Qt.FramelessWindowHint | Qt.WA_TranslucentBackground
+    color: "#00000000"
+    title: qsTr("QmlPomodoroTimer")
 
     function debug(param)
     {
-        console.log(param)
+        //console.log(param)
     }
 
     PomodoroTimer
@@ -28,5 +28,28 @@ Window
         //anchors.rightMargin: root.width/4
         anchors.centerIn: parent
     }
+/*
+    MouseArea
+    {
+        id: mouseArea
+        anchors.fill: parent
+        property int lastPositionX: 0
+        property int lastPositionY: 0
+        onClicked:
+        {
+            lastPositionX = mouseX
+            lastPositionY = mouseY
+        }
+
+        onMouseXChanged:
+        {
+            root.x = mouseX - lastPositionX
+        }
+        onMouseYChanged:
+        {
+            root.y = mouseY - lastPositionY
+        }
+    }
+    */
 
 }

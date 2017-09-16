@@ -3,5 +3,7 @@
         <file>ClockButton.qml</file>
         <file>main.qml</file>
         <file>PomodoroTimer.qml</file>
+        <file>Clock.qml</file>
+        <file>PomodoroInterval.qml</file>
     </qresource>
 </RCC>
