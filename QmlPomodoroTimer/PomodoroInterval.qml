@@ -1,11 +1,14 @@
 import QtQuick 2.0
 
-Item {
+Rectangle {
     id: interval
+    height: 20
+    width: 20
+    radius: 10
     property alias active: rect.enabled
     property string name: ""
     readonly property color activeColor: "green"
-    readonly property color inactiveColor: "red"
+    readonly property color inactiveColor: "blue"
 
     Column
     {
@@ -13,10 +16,11 @@ Item {
         Rectangle
         {
             id: rect
-            height: 20
-            width: 20
-            radius: 10
+            height: interval.height
+            width: interval.height
+            radius: interval.radius
             color: inactiveColor
+            enabled: true
             onEnabledChanged:
             {
                color = enabled ? activeColor : inactiveColor
@@ -28,7 +32,6 @@ Item {
             text: '<b>'+ interval.name +'</b>'
         }
     }
-
     MouseArea
     {
         anchors.fill: parent

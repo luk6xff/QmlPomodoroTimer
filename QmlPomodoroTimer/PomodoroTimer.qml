@@ -1,4 +1,5 @@
-import QtQuick 2.0
+import QtQuick 2.8
+import QtQuick.Layouts 1.0
 
 
 Item
@@ -12,6 +13,8 @@ Item
        width: 300
        height: 300
        radius: 150
+       anchors.verticalCenterOffset: 0
+       anchors.horizontalCenterOffset: 0
        property alias timeValue: time.text
        gradient: Gradient {
            GradientStop {
@@ -109,41 +112,41 @@ Item
             }
         }
 
-
-        Item
+        ListModel
         {
-            id: pomodoroIntervalContainer
-            property int currentActiveInterval: 0
-            anchors.centerIn: parent
-            anchors.horizontalCenter: parent.horizontalCenter
-            Row
-            {
-                id: intervalContainer
-                spacing: 5
-
-                PomodoroInterval
-                {
-                    id: pomodoroIntervalPomodoro
-                    name: "POMODORO"
-                }
-/*
-                PomodoroInterval
-                {
-                    id: pomodoroIntervalShortBreak
-                    name: "SHORT BREAK"
-                }
-
-*/
-                PomodoroInterval
-                {
-                    id: pomodoroIntervalLongBreak
-                    name: "LONG BREAK"
-                }
-
+            id: intervalModel
+            ListElement {
+                intname: "POMODORO"
+            }
+            ListElement {
+                intname: "SHORT BREAK"
+            }
+            ListElement {
+                intname: "LONG BREAK"
             }
         }
-    }
 
+        Component {
+            id: intervalDelegate
+            Row
+            {
+               PomodoroInterval { name: intname }
+            }
+        }
+
+        ListView {
+            //spacing: parent.width/(intervalModel.count+1)
+            anchors.bottom: parent.Center
+            anchors.fill: parent
+            //anchors.centerIn: parent
+            //height: parent.height/2
+            //width: parent.width/2
+            //width: parent.width; height: parent.height
+            orientation: ListView.Horizontal
+            model: intervalModel
+            delegate: intervalDelegate
+        }
+}
 
 
     Clock
