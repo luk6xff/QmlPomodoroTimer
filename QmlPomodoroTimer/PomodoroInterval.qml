@@ -6,9 +6,10 @@ Rectangle {
     width: 20
     radius: 10
     property alias active: rect.enabled
+    property alias textWidth: name.width
     property string name: ""
-    readonly property color activeColor: "green"
-    readonly property color inactiveColor: "blue"
+    property color activeColor: "green"
+    property color inactiveColor: "blue"
 
     Column
     {
@@ -19,8 +20,8 @@ Rectangle {
             height: interval.height
             width: interval.height
             radius: interval.radius
-            color: inactiveColor
-            enabled: true
+            color: enabled ? activeColor : inactiveColor
+            enabled: false
             onEnabledChanged:
             {
                color = enabled ? activeColor : inactiveColor
@@ -28,17 +29,10 @@ Rectangle {
         }
         Text
         {
+            anchors.horizontalCenter: rect.horizontalCenter
             id: name
+            font.pointSize: 7
             text: '<b>'+ interval.name +'</b>'
         }
     }
-    MouseArea
-    {
-        anchors.fill: parent
-        onClicked:
-        {
-            rect.enabled = rect.enabled ^ true
-        }
-    }
-
 }

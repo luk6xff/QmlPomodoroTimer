@@ -119,34 +119,64 @@ Item
                 intname: "POMODORO"
             }
             ListElement {
-                intname: "SHORT BREAK"
+                intname: "SHORT-BREAK"
             }
             ListElement {
-                intname: "LONG BREAK"
+                intname: "LONG-BREAK"
             }
         }
 
         Component {
             id: intervalDelegate
-            Row
-            {
-               PomodoroInterval { name: intname }
-            }
+                PomodoroInterval
+                {
+                    name: intname
+                    MouseArea
+                    {
+                        anchors.fill: parent
+                        onClicked:
+                        {
+                            intervalListView.currentIndex = index
+                            parent.active = parent.active ^ 1
+                        }
+                    }
+                }
         }
-
+        function intervalTypeChanged()
+        {
+            //changedIdx =
+        }
         ListView {
-            //spacing: parent.width/(intervalModel.count+1)
-            anchors.bottom: parent.Center
-            anchors.fill: parent
-            //anchors.centerIn: parent
-            //height: parent.height/2
-            //width: parent.width/2
-            //width: parent.width; height: parent.height
+            id: intervalListView
+            spacing: 50
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenterOffset: 10
+            height: parent.height/2
+            width:  parent.width/2
             orientation: ListView.Horizontal
             model: intervalModel
             delegate: intervalDelegate
+            highlight: Rectangle { color: "mediumseagreen"; radius: 5 }
+            highlightFollowsCurrentItem: true
+            focus: true
+            Component.onCompleted: currentIndex = 0
+            onCurrentIndexChanged:
+            {
+                for (var idx = 0; idx < intervalListView.count; idx++)
+                {
+                    if(idx != intervalListView.currentIndex)
+                    {
+                        intervalListView.model.setProperty(idx,"activae", false);
+                    }
+                    else
+                    {
+                        intervalListView.model.setProperty(idx,"active", true);
+                    }
+                }
+            }
         }
-}
+    }
 
 
     Clock
