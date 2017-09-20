@@ -20,8 +20,8 @@ Rectangle {
             height: interval.height
             width: interval.height
             radius: interval.radius
-            color: enabled ? activeColor : inactiveColor
             enabled: false
+            color: enabled ? activeColor : inactiveColor
             onEnabledChanged:
             {
                color = enabled ? activeColor : inactiveColor

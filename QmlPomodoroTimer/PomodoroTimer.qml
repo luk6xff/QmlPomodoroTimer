@@ -1,4 +1,4 @@
-import QtQuick 2.8
+import QtQuick 2.3
 import QtQuick.Layouts 1.0
 
 
@@ -117,12 +117,15 @@ Item
             id: intervalModel
             ListElement {
                 intname: "POMODORO"
+                activestate: false
             }
             ListElement {
                 intname: "SHORT-BREAK"
+                activestate: false
             }
             ListElement {
                 intname: "LONG-BREAK"
+                activestate: false
             }
         }
 
@@ -131,21 +134,18 @@ Item
                 PomodoroInterval
                 {
                     name: intname
+                    active: activestate
                     MouseArea
                     {
                         anchors.fill: parent
                         onClicked:
                         {
                             intervalListView.currentIndex = index
-                            parent.active = parent.active ^ 1
                         }
                     }
                 }
         }
-        function intervalTypeChanged()
-        {
-            //changedIdx =
-        }
+
         ListView {
             id: intervalListView
             spacing: 50
@@ -165,19 +165,47 @@ Item
             {
                 for (var idx = 0; idx < intervalListView.count; idx++)
                 {
-                    if(idx != intervalListView.currentIndex)
+                    if(idx != currentIndex)
                     {
-                        intervalListView.model.setProperty(idx,"activae", false);
+                        model.get(idx).activestate = false;
                     }
                     else
                     {
-                        intervalListView.model.setProperty(idx,"active", true);
+                        model.get(idx).activestate = true;
+                        //model.setProperty(idx,"activestate", true);
                     }
+                }
+
+                if (currentIndex < intervalListView.count && currentIndex >= 0)
+                {
+                    resetIntervalValues(model.get(currentIndex))
                 }
             }
         }
     }
 
+
+    function resetIntervalValues(model)
+    {
+        switch (model.intname)
+        {
+            case "SHORT-BREAK":
+                clock.minutes = 5;
+                clock.seconds = 0;
+                break;
+
+            case "LONG-BREAK":
+                clock.minutes = 10;
+                clock.seconds = 0;
+                break;
+
+            case "POMODORO":
+            default:
+                clock.minutes = 25;
+                clock.seconds = 0;
+                break;
+        }
+    }
 
     Clock
     {
@@ -185,7 +213,8 @@ Item
         running: true
         seconds: 0
         minutes: 0
-        alarmSec: 5
+        alarmTime: {10,11}
+        //alarmTime.minutes: 25
     }
 }
 
