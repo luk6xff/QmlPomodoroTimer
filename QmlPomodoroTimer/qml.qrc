@@ -5,5 +5,8 @@
         <file>PomodoroTimer.qml</file>
         <file>Clock.qml</file>
         <file>PomodoroInterval.qml</file>
+        <file>PomodoroUtils.js</file>
+        <file>ContextMenu.qml</file>
+        <file>ContextMenuItem.qml</file>
     </qresource>
 </RCC>

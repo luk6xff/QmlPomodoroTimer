@@ -1,5 +1,7 @@
-import QtQuick 2.3
+import QtQuick 2.8
 import QtQuick.Layouts 1.0
+import "PomodoroUtils.js" as Utils
+
 
 
 Item
@@ -35,7 +37,7 @@ Item
            width: 164
            height: 43
            color: "#0c4e08"
-           text: clock.seconds
+           text: Utils.formatDisplayedTime(clock.minutes, clock.seconds)
            font.capitalization: Font.Capitalize
            font.bold: true
            font.family: "Tahoma"
@@ -131,19 +133,19 @@ Item
 
         Component {
             id: intervalDelegate
-                PomodoroInterval
+            PomodoroInterval
+            {
+                name: model.intname
+                active: model.activestate
+                MouseArea
                 {
-                    name: intname
-                    active: activestate
-                    MouseArea
+                    anchors.fill: parent
+                    onClicked:
                     {
-                        anchors.fill: parent
-                        onClicked:
-                        {
-                            intervalListView.currentIndex = index
-                        }
+                        intervalListView.currentIndex = index
                     }
                 }
+            }
         }
 
         ListView {
@@ -182,8 +184,35 @@ Item
                 }
             }
         }
-    }
 
+        MouseArea
+        {
+            anchors.fill: parent;
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
+            onClicked:
+            {
+                var contextMenu;
+                if (mouse.button === Qt.LeftButton)
+                {
+                    console.log("Left")
+                    if (contextMenu !== null)
+                    {
+                        //contextMenu.destroy();
+                    }
+                }
+                else if (mouse.button === Qt.RightButton)
+                {
+                    var component;
+                    //http://doc.qt.io/qt-5/qtqml-javascript-dynamicobjectcreation.html
+                    component = Qt.createComponent("ContextMenu.qml");
+                    var point = mapToItem(plate.parent, mouseX, mouseY)
+                    console.log("For system: " +" x:"+point.x +" y:"+ point.y)
+                    contextMenu = component.createObject(plate.parent, {x:point.x, y:point.y});
+
+                }
+            }
+        }
+    }
 
     function resetIntervalValues(model)
     {
@@ -201,8 +230,7 @@ Item
 
             case "POMODORO":
             default:
-                clock.minutes = 25;
-                clock.seconds = 0;
+                clock.setTime(1,0)
                 break;
         }
     }
@@ -211,10 +239,6 @@ Item
     {
         id: clock
         running: true
-        seconds: 0
-        minutes: 0
-        alarmTime: {10,11}
-        //alarmTime.minutes: 25
     }
 }
 

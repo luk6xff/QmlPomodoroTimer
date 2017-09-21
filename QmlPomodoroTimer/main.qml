@@ -5,8 +5,8 @@ Window
 {
     id: root
     visible: true
-    width: 480
-    height: 480 //Screen.desktopAvailableHeight
+    width: 400
+    height: 400 //Screen.desktopAvailableHeight
     onBeforeRendering:
     {
       debug(height);
