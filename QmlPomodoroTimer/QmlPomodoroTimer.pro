@@ -37,4 +37,8 @@ DISTFILES += \
     Clock.qml \
     PomodoroInterval.qml \
     ContextMenu.qml \
-    ContextMenuItem.qml
+    ContextMenuItem.qml \
+    SettingsDialog.qml \
+    Settings.qml \
+    Colors.qml \
+    SettingsIntervalTime.qml

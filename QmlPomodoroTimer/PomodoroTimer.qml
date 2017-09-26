@@ -1,5 +1,6 @@
 import QtQuick 2.8
 import QtQuick.Layouts 1.0
+import QtQuick.Controls 2.1
 import "PomodoroUtils.js" as Utils
 
 
@@ -15,8 +16,8 @@ Item
        width: 300
        height: 300
        radius: 150
-       anchors.verticalCenterOffset: 0
-       anchors.horizontalCenterOffset: 0
+       //anchors.verticalCenterOffset: 0
+       //anchors.horizontalCenterOffset: 0
        property alias timeValue: time.text
        gradient: Gradient {
            GradientStop {
@@ -140,6 +141,7 @@ Item
                 MouseArea
                 {
                     anchors.fill: parent
+                    propagateComposedEvents: true
                     onClicked:
                     {
                         intervalListView.currentIndex = index
@@ -187,28 +189,25 @@ Item
 
         MouseArea
         {
+            id: rectMouseArea
             anchors.fill: parent;
             acceptedButtons: Qt.LeftButton | Qt.RightButton
+                        property var highlightItem: null;
+            propagateComposedEvents: true
             onClicked:
             {
                 var contextMenu;
                 if (mouse.button === Qt.LeftButton)
                 {
-                    console.log("Left")
-                    if (contextMenu !== null)
-                    {
-                        //contextMenu.destroy();
-                    }
                 }
                 else if (mouse.button === Qt.RightButton)
                 {
                     var component;
                     //http://doc.qt.io/qt-5/qtqml-javascript-dynamicobjectcreation.html
                     component = Qt.createComponent("ContextMenu.qml");
-                    var point = mapToItem(plate.parent, mouseX, mouseY)
-                    console.log("For system: " +" x:"+point.x +" y:"+ point.y)
-                    contextMenu = component.createObject(plate.parent, {x:point.x, y:point.y});
-
+                    var point = mapFromItem(parent, mouseX, mouseY)
+                    contextMenu = component.createObject(parent, {"x":point.x, "y":point.y});
+                    contextMenu.open()
                 }
             }
         }

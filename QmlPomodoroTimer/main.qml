@@ -24,8 +24,6 @@ Window
 
     PomodoroTimer
     {
-        //x: root.width/5
-        //anchors.rightMargin: root.width/4
         anchors.centerIn: parent
     }
 /*

@@ -87,6 +87,7 @@ Item {
     // Mouse area to react on click events
     MouseArea {
         id: mouseArea
+        propagateComposedEvents: true
         antialiasing: true
         anchors.fill: parent
         hoverEnabled: true

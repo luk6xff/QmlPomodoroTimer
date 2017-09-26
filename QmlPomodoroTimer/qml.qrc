@@ -8,5 +8,9 @@
         <file>PomodoroUtils.js</file>
         <file>ContextMenu.qml</file>
         <file>ContextMenuItem.qml</file>
+        <file>SettingsDialog.qml</file>
+        <file>Colors.qml</file>
+        <file>Settings.qml</file>
+        <file>SettingsIntervalTime.qml</file>
     </qresource>
 </RCC>
