@@ -13,8 +13,8 @@ Window
       debug(width)
     }
 
-    flags: Qt.ToolTip | Qt.FramelessWindowHint | Qt.WA_TranslucentBackground
-    color: "#00000000"
+    //flags: Qt.ToolTip | Qt.FramelessWindowHint | Qt.WA_TranslucentBackground
+    //color: "#00000000"
     title: qsTr("QmlPomodoroTimer")
 
     function debug(param)

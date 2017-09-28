@@ -91,10 +91,18 @@ Item {
         antialiasing: true
         anchors.fill: parent
         hoverEnabled: true
-        onEntered: { button.state="Hovering"}
-        onExited: { button.state=""}
-        onClicked: { button.clicked();}
-        onPressed: { button.state="Pressed" }
+        onEntered: {
+            button.state="Hovering"
+        }
+        onExited: {
+            button.state=""
+        }
+        onClicked: {
+            button.clicked();
+        }
+        onPressed: {
+            button.state="Pressed"
+        }
         onReleased: {
             if (containsMouse)
             {
@@ -105,10 +113,5 @@ Item {
               button.state="";
             }
         }
-    }
-
-    onClicked:
-    {
-        //to be overriden
     }
 }

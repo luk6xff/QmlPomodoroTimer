@@ -16,8 +16,6 @@ Item
        width: 300
        height: 300
        radius: 150
-       //anchors.verticalCenterOffset: 0
-       //anchors.horizontalCenterOffset: 0
        property alias timeValue: time.text
        gradient: Gradient {
            GradientStop {
@@ -138,6 +136,8 @@ Item
             {
                 name: model.intname
                 active: model.activestate
+                Layout.fillWidth: true
+                Layout.fillHeight: true
                 MouseArea
                 {
                     anchors.fill: parent
@@ -145,6 +145,7 @@ Item
                     onClicked:
                     {
                         intervalListView.currentIndex = index
+                        mouse.accepted = true
                     }
                 }
             }
@@ -152,21 +153,35 @@ Item
 
         ListView {
             id: intervalListView
-            spacing: 50
-            anchors.horizontalCenter: parent.horizontalCenter
+            Layout.alignment: Qt.AlignCenter
+            spacing: 10
+            //preferredHighlightBegin: parent.width/2 - parent.width/4
+            //preferredHighlightEnd: parent.width/2 + parent.width/4
+            highlightRangeMode: ListView.ApplyRange
+            width: parent.width/2
+            antialiasing: true
+            anchors.verticalCenterOffset: -75
             anchors.verticalCenter: parent.verticalCenter
-            anchors.verticalCenterOffset: 10
-            height: parent.height/2
-            width:  parent.width/2
+            anchors.horizontalCenter: parent.horizontalCenter
+            flickableDirection: Flickable.HorizontalFlick
+            boundsBehavior: Flickable.StopAtBounds
+            snapMode: ListView.NoSnap
+            layoutDirection: Qt.LeftToRight
             orientation: ListView.Horizontal
             model: intervalModel
             delegate: intervalDelegate
-            highlight: Rectangle { color: "mediumseagreen"; radius: 5 }
+            highlight: Rectangle {
+                height: 20
+                width: 20
+                color: "mediumseagreen"
+                radius: 5
+            }
             highlightFollowsCurrentItem: true
             focus: true
             Component.onCompleted: currentIndex = 0
             onCurrentIndexChanged:
             {
+                console.log(intervalListView.delegate.height, intervalListView.model.iconWidth)
                 for (var idx = 0; idx < intervalListView.count; idx++)
                 {
                     if(idx != currentIndex)
@@ -192,8 +207,8 @@ Item
             id: rectMouseArea
             anchors.fill: parent;
             acceptedButtons: Qt.LeftButton | Qt.RightButton
-                        property var highlightItem: null;
             propagateComposedEvents: true
+            z: -1
             onClicked:
             {
                 var contextMenu;
@@ -229,7 +244,7 @@ Item
 
             case "POMODORO":
             default:
-                clock.setTime(1,0)
+                clock.setTime(0,2)
                 break;
         }
     }

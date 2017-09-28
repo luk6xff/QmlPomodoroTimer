@@ -1,25 +1,25 @@
 import QtQuick 2.0
 
-Rectangle {
+Item {
     id: interval
-    height: 20
-    width: 20
-    radius: 10
+    height: rect.height + name.height
+    width: col.width = rect.width > name.width ? rect.width : name.width
+    property alias radius: rect.radius
     property alias active: rect.enabled
-    property alias textWidth: name.width
     property string name: ""
     property color activeColor: "green"
     property color inactiveColor: "blue"
 
     Column
     {
+        id: col
         spacing: 5
         Rectangle
         {
             id: rect
-            height: interval.height
-            width: interval.height
-            radius: interval.radius
+            height: 20
+            width: 20
+            radius: 10
             enabled: false
             color: enabled ? activeColor : inactiveColor
             onEnabledChanged:
@@ -29,8 +29,8 @@ Rectangle {
         }
         Text
         {
-            anchors.horizontalCenter: rect.horizontalCenter
             id: name
+            anchors.horizontalCenter: rect.horizontalCenter
             font.pointSize: 7
             text: '<b>'+ interval.name +'</b>'
         }
