@@ -94,11 +94,6 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked: colorDialog.close()
             }
-            Button {
-                text: "set to green"
-                anchors.verticalCenter: parent.verticalCenter
-                onClicked: colorDialog.color = "green"
-            }
         }
     }
 }

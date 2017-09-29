@@ -3,6 +3,7 @@ import QtQuick.Controls 1.2
 import QtQuick.Dialogs 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.0
+import Qt.labs.settings 1.0
 
 Item {
     id: settings
@@ -10,7 +11,22 @@ Item {
     height: parent.height
     SystemPalette { id: palette }
     clip: true
-    property bool autoNextInterval
+    property alias mainset: settingsStorage
+
+    Settings
+    {
+        id: settingsStorage
+        category: "MainSettings"
+        property alias settingsAutoStartOfNextInterval: automaticStartOfnextInterval.checked
+        property alias settingsPomodoroIntervalTimeMin: pomodoroAlarmValue.min
+        property alias settingsPomodoroIntervalTimeSec: pomodoroAlarmValue.sec
+        property alias settingsShortBreakIntervalTimeMin: shortBreakAlarmValue.min
+        property alias settingsShortBreakIntervalTimeSec: shortBreakAlarmValue.sec
+        property alias settingsLongBreakIntervalTimeMin: longBreakAlarmValue.min
+        property alias settingsLongBreakIntervalTimeSec: longBreakAlarmValue.sec
+        property alias settingsCountModeIdx: countMode.currentIndex
+        property string settingsCountMode: countMode.textAt(countMode.currentIndex)
+    }
 
     ScrollView {
         id: scrollView
@@ -23,18 +39,21 @@ Item {
         }
         ColumnLayout {
             spacing: 15
-            Item { Layout.preferredHeight: 4 } // padding
+            Item {
+                Layout.preferredHeight: 4
+            }
             CheckBox {
                 id: automaticStartOfnextInterval
                 text: "Autostart of next interval"
                 checked: true
-                Binding on checked { value: settings.autoNextInterval = true }
+                //Binding on checked { value: settings.autoNextInterval = true }
             }
             RowLayout {
                 Label {
                     text: "Counter direction: "
                 }
                 ComboBox {
+                    id: countMode
                     currentIndex: 0
                     model: ListModel {
                         id: cbItems
@@ -49,21 +68,21 @@ Item {
                 spacing: 40
                 RowLayout
                 {
-                    SettingsIntervalTime {
+                    MainSettingsIntervalTime {
                         id: pomodoroAlarmValue
                         name: "Pomodoro alarm time"
                     }
                  }
                 RowLayout
                 {
-                    SettingsIntervalTime {
+                    MainSettingsIntervalTime {
                         id: shortBreakAlarmValue
                         name: "Short break alarm time"
                     }
                 }
                 RowLayout
                 {
-                    SettingsIntervalTime {
+                    MainSettingsIntervalTime {
                         id: longBreakAlarmValue
                         name: "Long break alarm time"
                     }

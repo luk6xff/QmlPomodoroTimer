@@ -9,8 +9,9 @@
         <file>ContextMenu.qml</file>
         <file>ContextMenuItem.qml</file>
         <file>SettingsDialog.qml</file>
-        <file>Colors.qml</file>
-        <file>Settings.qml</file>
-        <file>SettingsIntervalTime.qml</file>
+        <file>GlobalSettings.qml</file>
+        <file>ColorsSettings.qml</file>
+        <file>MainSettings.qml</file>
+        <file>MainSettingsIntervalTime.qml</file>
     </qresource>
 </RCC>

@@ -39,6 +39,7 @@ DISTFILES += \
     ContextMenu.qml \
     ContextMenuItem.qml \
     SettingsDialog.qml \
-    Settings.qml \
-    Colors.qml \
-    SettingsIntervalTime.qml
+    GlobalSettings.qml \
+    MainSettings.qml \
+    ColorsSettings.qml \
+    MainSettingsIntervalTime.qml
