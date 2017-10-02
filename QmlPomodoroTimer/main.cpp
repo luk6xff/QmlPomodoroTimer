@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
    app.setApplicationName("QMLPomodoroTimer");
 
    //register singletons
-   qmlRegisterSingletonType( QUrl("qrc:/GlobalSettings.qml"), "QmlPomodoroTimer.GlobalSettings", 1, 0, "GlobalSettings");
+   //qmlRegisterSingletonType( QUrl("qrc:/GlobalSettings.qml"), "QmlPomodoroTimer.GlobalSettings", 1, 0, "GlobalSettings");
    QQmlApplicationEngine engine;
    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 

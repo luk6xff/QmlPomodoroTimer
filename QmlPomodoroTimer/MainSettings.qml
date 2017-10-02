@@ -4,6 +4,7 @@ import QtQuick.Dialogs 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.0
 import Qt.labs.settings 1.0
+import "."
 
 Item {
     id: settings
@@ -11,21 +12,18 @@ Item {
     height: parent.height
     SystemPalette { id: palette }
     clip: true
-    property alias mainset: settingsStorage
 
-    Settings
+    function saveSettings()
     {
-        id: settingsStorage
-        category: "MainSettings"
-        property alias settingsAutoStartOfNextInterval: automaticStartOfnextInterval.checked
-        property alias settingsPomodoroIntervalTimeMin: pomodoroAlarmValue.min
-        property alias settingsPomodoroIntervalTimeSec: pomodoroAlarmValue.sec
-        property alias settingsShortBreakIntervalTimeMin: shortBreakAlarmValue.min
-        property alias settingsShortBreakIntervalTimeSec: shortBreakAlarmValue.sec
-        property alias settingsLongBreakIntervalTimeMin: longBreakAlarmValue.min
-        property alias settingsLongBreakIntervalTimeSec: longBreakAlarmValue.sec
-        property alias settingsCountModeIdx: countMode.currentIndex
-        property string settingsCountMode: countMode.textAt(countMode.currentIndex)
+        GlobalSettings.main.autoStartOfNextInterval = automaticStartOfnextInterval.checked
+        GlobalSettings.main.pomodoroIntervalTimeMin = pomodoroAlarmValue.min
+        GlobalSettings.main.pomodoroIntervalTimeSec = pomodoroAlarmValue.sec
+        GlobalSettings.main.shortBreakIntervalTimeMin = shortBreakAlarmValue.min
+        GlobalSettings.main.shortBreakIntervalTimeSec = shortBreakAlarmValue.sec
+        GlobalSettings.main.longBreakIntervalTimeMin = longBreakAlarmValue.min
+        GlobalSettings.main.longBreakIntervalTimeSec = longBreakAlarmValue.sec
+        GlobalSettings.main.countModeIdx = countMode.currentIndex
+        GlobalSettings.main.countMode = countMode.textAt(countMode.currentIndex)
     }
 
     ScrollView {
@@ -45,8 +43,7 @@ Item {
             CheckBox {
                 id: automaticStartOfnextInterval
                 text: "Autostart of next interval"
-                checked: true
-                //Binding on checked { value: settings.autoNextInterval = true }
+                checked: GlobalSettings.main.autoStartOfNextInterval
             }
             RowLayout {
                 Label {
@@ -54,7 +51,7 @@ Item {
                 }
                 ComboBox {
                     id: countMode
-                    currentIndex: 0
+                    currentIndex: GlobalSettings.main.countModeIdx
                     model: ListModel {
                         id: cbItems
                         ListElement { text: "UP"; color: "Yellow" }
@@ -70,6 +67,8 @@ Item {
                 {
                     MainSettingsIntervalTime {
                         id: pomodoroAlarmValue
+                        min: GlobalSettings.main.pomodoroIntervalTimeMin
+                        sec: GlobalSettings.main.pomodoroIntervalTimeSec
                         name: "Pomodoro alarm time"
                     }
                  }
@@ -77,6 +76,8 @@ Item {
                 {
                     MainSettingsIntervalTime {
                         id: shortBreakAlarmValue
+                        min: GlobalSettings.main.shortBreakIntervalTimeMin
+                        sec: GlobalSettings.main.shortBreakIntervalTimeSec
                         name: "Short break alarm time"
                     }
                 }
@@ -84,6 +85,8 @@ Item {
                 {
                     MainSettingsIntervalTime {
                         id: longBreakAlarmValue
+                        min: GlobalSettings.main.longBreakIntervalTimeMin
+                        sec: GlobalSettings.main.longBreakIntervalTimeSec
                         name: "Long break alarm time"
                     }
                 }
@@ -112,12 +115,14 @@ Item {
                 text: "Save"
                 anchors.verticalCenter: parent.verticalCenter
                 onClicked:
-                {}
+                {
+                    saveSettings()
+                }
             }
             Button {
                 text: "Close"
                 anchors.verticalCenter: parent.verticalCenter
-                onClicked: settings.parent.close()
+                onClicked: close()
             }
         }
     }

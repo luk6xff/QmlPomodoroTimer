@@ -1,7 +1,7 @@
 import QtQuick 2.8
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 2.1
-import QmlPomodoroTimer.GlobalSettings 1.0
+import "."
 import "PomodoroUtils.js" as Utils
 
 
@@ -14,9 +14,11 @@ Item
     {
        id : plate
        anchors.centerIn: parent
-       width: 300
-       height: 300
-       radius: 150
+       width: 280
+       height: 280
+       radius: 140
+       anchors.verticalCenterOffset: 0
+       anchors.horizontalCenterOffset: 0
        property alias timeValue: time.text
        gradient: Gradient {
            GradientStop {
@@ -43,7 +45,7 @@ Item
            font.family: "Tahoma"
            horizontalAlignment: Text.AlignHCenter
            verticalAlignment: Text.AlignVCenter
-           font.pixelSize: 30
+           font.pixelSize: 50
         }
 
         Item
@@ -64,8 +66,7 @@ Item
                 enabled: clock.running ? false : true
                 onClicked:
                 {
-                    clock.minutes = 0;
-                    clock.seconds = 0;
+                    resetIntervalValues(intervalListView.model.get(intervalListView.currentIndex))
                 }
             }
         }
@@ -88,6 +89,7 @@ Item
                 onClicked:
                 {
                     clock.running = true;
+                    changeIntervalOpacity()
                 }
             }
         }
@@ -145,7 +147,10 @@ Item
                     propagateComposedEvents: true
                     onClicked:
                     {
-                        intervalListView.currentIndex = index
+                        if (!clock.running)
+                        {
+                            intervalListView.currentIndex = index
+                        }
                         mouse.accepted = true
                     }
                 }
@@ -155,34 +160,24 @@ Item
         ListView {
             id: intervalListView
             Layout.alignment: Qt.AlignCenter
-            spacing: 10
-            //preferredHighlightBegin: parent.width/2 - parent.width/4
-            //preferredHighlightEnd: parent.width/2 + parent.width/4
-            highlightRangeMode: ListView.ApplyRange
-            width: parent.width/2
+            spacing: 5
+            width: plate.width/2
             antialiasing: true
             anchors.verticalCenterOffset: -75
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
-            flickableDirection: Flickable.HorizontalFlick
-            boundsBehavior: Flickable.StopAtBounds
+            anchors.verticalCenter: plate.verticalCenter
+            anchors.horizontalCenter: plate.horizontalCenter
+            //flickableDirection: Flickable.HorizontalFlick
+            //boundsBehavior: Flickable.StopAtBounds
             snapMode: ListView.NoSnap
-            layoutDirection: Qt.LeftToRight
+            interactive: false
+            //layoutDirection: Qt.LeftToRight
             orientation: ListView.Horizontal
             model: intervalModel
             delegate: intervalDelegate
-            highlight: Rectangle {
-                height: 20
-                width: 20
-                color: "mediumseagreen"
-                radius: 5
-            }
-            highlightFollowsCurrentItem: true
             focus: true
             Component.onCompleted: currentIndex = 0
             onCurrentIndexChanged:
             {
-                console.log(intervalListView.delegate.height, intervalListView.model.iconWidth)
                 for (var idx = 0; idx < intervalListView.count; idx++)
                 {
                     if(idx != currentIndex)
@@ -231,29 +226,48 @@ Item
 
     function resetIntervalValues(model)
     {
+        clock.upOrDownCount = GlobalSettings.main.countMode
         switch (model.intname)
         {
             case "SHORT-BREAK":
-                clock.minutes = GlobalSettings.settings.settingsPomodoroIntervalTimeMin;
-                clock.seconds = 0;
+                clock.setTime(GlobalSettings.main.shortBreakIntervalTimeMin,
+                              GlobalSettings.main.shortBreakIntervalTimeSec)
                 break;
 
             case "LONG-BREAK":
-                clock.minutes = 10;
-                clock.seconds = 0;
+                clock.setTime(GlobalSettings.main.longBreakIntervalTimeMin,
+                              GlobalSettings.main.longBreakIntervalTimeSec)
                 break;
 
             case "POMODORO":
             default:
-                clock.setTime(0,2)
+                clock.setTime(GlobalSettings.main.pomodoroIntervalTimeMin,
+                              GlobalSettings.main.pomodoroIntervalTimeSec)
                 break;
+        }
+        changeIntervalOpacity()
+    }
+
+    function changeIntervalOpacity()
+    {
+        if (clock.running)
+        {
+            intervalListView.opacity = 0.5
+        }
+        else
+        {
+            intervalListView.opacity = 1
         }
     }
 
     Clock
     {
         id: clock
-        running: true
+        running: false
+        onTimePassed:
+        {
+            changeIntervalOpacity()
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtMultimedia 5.8
 
 
 Item {
@@ -19,26 +20,35 @@ Item {
     {
         switch (upOrDownCount)
         {
-        case 0: //DOWN
-            minutes = min;
-            seconds = sec;
-            alarmTime.minutes = 0;
-            alarmTime.seconds = 0;
-            break;
-        case 1: //UP
-        default:
-            minutes = 0;
-            seconds = 0;
-            alarmTime.minutes = min;
-            alarmTime.seconds = sec;
-            break;
+            case "DOWN":
+            default:
+                minutes = min;
+                seconds = sec;
+                alarmTime.minutes = 0;
+                alarmTime.seconds = 0;
+                break;
+            case "UP":
+                minutes = 0;
+                seconds = 0;
+                alarmTime.minutes = min;
+                alarmTime.seconds = sec;
+                break;
         }
+        playAlarm.stop();
     }
 
-    property int upOrDownCount: 0 //0-downCount, 1-upCount
+    property string upOrDownCount: ""
 
     property alias running: timer.running
     signal timePassed
+
+    MediaPlayer
+    {
+        id: playAlarm
+        loops: MediaPlayer.Infinite
+        source: "qrc:/sounds/sound0.mp3"
+    }
+
     Timer
     {
         id: timer
@@ -48,27 +58,27 @@ Item {
         onTriggered: {
             switch (upOrDownCount)
             {
-            case 0: //DOWN
-                if (--seconds < 0)
-                {
-                    seconds = 59;
-                    minutes--;
-                }
-                break;
-            case 1: //UP
-            default:
-                if (++seconds > 59)
-                {
-                    seconds = 0;
-                    minutes++;
-                }
-                break;
+                case "DOWN":
+                default:
+                    if (--seconds < 0)
+                    {
+                        seconds = 59;
+                        minutes--;
+                    }
+                    break;
+                case "UP":
+                    if (++seconds > 59)
+                    {
+                        seconds = 0;
+                        minutes++;
+                    }
+                    break;
             }
             if (seconds === alarmTime.seconds && minutes === alarmTime.minutes)
             {
-                seconds = 99;
-                minutes = 99;
+                playAlarm.play()
                 running = false;
+                timePassed()
             }
         }
     }

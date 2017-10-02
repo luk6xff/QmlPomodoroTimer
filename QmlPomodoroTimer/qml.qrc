@@ -13,5 +13,7 @@
         <file>ColorsSettings.qml</file>
         <file>MainSettings.qml</file>
         <file>MainSettingsIntervalTime.qml</file>
+        <file>qmldir</file>
+        <file>sounds/sound0.mp3</file>
     </qresource>
 </RCC>

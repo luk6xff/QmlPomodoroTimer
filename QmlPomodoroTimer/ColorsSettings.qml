@@ -8,18 +8,20 @@ Item {
     SystemPalette { id: palette }
     clip: true
 
-    //! [colordialog]
     ColorDialog {
         id: colorDialog
         visible: colorDialogVisible.checked
         modality: colorDialogModal.checked ? Qt.WindowModal : Qt.NonModal
-        title: "Choose a color"
+        title: root.title + " - color settings"
         color: "green"
         showAlphaChannel: colorDialogAlpha.checked
-        onAccepted: { console.log("Accepted: " + color) }
-        onRejected: { console.log("Rejected") }
+        onAccepted: {
+            console.log("Accepted: " + color)
+        }
+        onRejected: {
+            console.log("Rejected")
+        }
     }
-    //! [colordialog]
 
     Column {
         anchors.fill: parent
@@ -27,7 +29,7 @@ Item {
         spacing: 8
         Label {
             font.bold: true
-            text: "Color dialog properties:"
+            text: "Color Settings"
         }
         CheckBox {
             id: colorDialogModal

@@ -42,4 +42,5 @@ DISTFILES += \
     GlobalSettings.qml \
     MainSettings.qml \
     ColorsSettings.qml \
-    MainSettingsIntervalTime.qml
+    MainSettingsIntervalTime.qml \
+    qmldir
