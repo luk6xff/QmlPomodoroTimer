@@ -7,21 +7,11 @@ Window
     id: root
     visible: true
     width: 300
-    height: 350 //Screen.desktopAvailableHeight
-    onBeforeRendering:
-    {
-      debug(height);
-      debug(width)
-    }
+    height: 350
 
-    flags: Qt.ToolTip | Qt.FramelessWindowHint | Qt.WA_TranslucentBackground
+    flags: Qt.FramelessWindowHint | Qt.WA_TranslucentBackground
     color: "#00000000"
     title: qsTr("QmlPomodoroTimer")
-
-    function debug(param)
-    {
-        //console.log(param)
-    }
 
     PomodoroTimer
     {
@@ -35,18 +25,14 @@ Window
         z: -1
         property int lastPositionX: 0
         property int lastPositionY: 0
-        onReleased:
+
+        onPressed:
         {
-             var point = mapToGlobal(mouseX, mouseY)
-             root.x = point.x - lastPositionX
-             root.y = point.y - lastPositionY
+            lastPositionX = mouse.x
+            lastPositionY = mouse.y
         }
-        onPressAndHold:
-        {
-            var point = mapToGlobal(mouseX, mouseY)
-            lastPositionX = point.x
-            lastPositionY = point.y
-        }
+        onMouseXChanged: root.x += mouse.x - lastPositionX
+        onMouseYChanged: root.y += mouse.y - lastPositionY
     }
 
 }

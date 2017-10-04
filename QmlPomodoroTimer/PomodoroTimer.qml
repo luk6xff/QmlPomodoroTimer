@@ -144,14 +144,12 @@ Item
                 MouseArea
                 {
                     anchors.fill: parent
-                    propagateComposedEvents: true
                     onClicked:
                     {
                         if (!clock.running)
                         {
                             intervalListView.currentIndex = index
                         }
-                        mouse.accepted = true
                     }
                 }
             }
@@ -166,11 +164,9 @@ Item
             anchors.verticalCenterOffset: -75
             anchors.verticalCenter: plate.verticalCenter
             anchors.horizontalCenter: plate.horizontalCenter
-            //flickableDirection: Flickable.HorizontalFlick
-            //boundsBehavior: Flickable.StopAtBounds
             snapMode: ListView.NoSnap
             interactive: false
-            //layoutDirection: Qt.LeftToRight
+            layoutDirection: Qt.LeftToRight
             orientation: ListView.Horizontal
             model: intervalModel
             delegate: intervalDelegate
@@ -202,16 +198,11 @@ Item
         {
             id: rectMouseArea
             anchors.fill: parent;
-            acceptedButtons: Qt.LeftButton | Qt.RightButton
-            propagateComposedEvents: true
-            z: -1
+            acceptedButtons: Qt.RightButton
             onClicked:
             {
                 var contextMenu;
-                if (mouse.button === Qt.LeftButton)
-                {
-                }
-                else if (mouse.button === Qt.RightButton)
+                if (mouse.button === Qt.RightButton)
                 {
                     var component;
                     //http://doc.qt.io/qt-5/qtqml-javascript-dynamicobjectcreation.html

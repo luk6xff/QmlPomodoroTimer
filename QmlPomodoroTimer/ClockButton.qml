@@ -87,30 +87,31 @@ Item {
     // Mouse area to react on click events
     MouseArea {
         id: mouseArea
-        propagateComposedEvents: true
         antialiasing: true
         anchors.fill: parent
         hoverEnabled: true
+        preventStealing: true
+        propagateComposedEvents: true
         onEntered: {
-            button.state="Hovering"
+            button.state = "Hovering"
         }
         onExited: {
-            button.state=""
+            button.state = ""
         }
         onClicked: {
             button.clicked();
         }
         onPressed: {
-            button.state="Pressed"
+            button.state = "Pressed"
         }
         onReleased: {
             if (containsMouse)
             {
-              button.state="Hovering";
+              button.state = "Hovering";
             }
             else
             {
-              button.state="";
+              button.state = "";
             }
         }
     }
