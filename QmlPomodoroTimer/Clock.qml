@@ -1,6 +1,4 @@
 import QtQuick 2.0
-import QtMultimedia 5.8
-
 
 Item {
     id: clock
@@ -34,20 +32,11 @@ Item {
                 alarmTime.seconds = sec;
                 break;
         }
-        playAlarm.stop();
     }
 
     property string upOrDownCount: ""
-
     property alias running: timer.running
     signal timePassed
-
-    MediaPlayer
-    {
-        id: playAlarm
-        loops: MediaPlayer.Infinite
-        source: "qrc:/sounds/sound0.mp3"
-    }
 
     Timer
     {
@@ -76,7 +65,6 @@ Item {
             }
             if (seconds === alarmTime.seconds && minutes === alarmTime.minutes)
             {
-                playAlarm.play()
                 running = false;
                 timePassed()
             }

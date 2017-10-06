@@ -1,6 +1,7 @@
 import QtQuick 2.8
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 2.1
+import QtMultimedia 5.8
 import "."
 import "PomodoroUtils.js" as Utils
 
@@ -10,6 +11,8 @@ Item
 {
     id: pomodoro
     anchors.fill: parent
+    state: "Reset"
+
     Rectangle
     {
        id : plate
@@ -19,7 +22,18 @@ Item
        radius: 140
        anchors.verticalCenterOffset: 0
        anchors.horizontalCenterOffset: 0
+       /*Image {
+           id: pomodoroImg
+           anchors.fill: plate
+           anchors.centerIn: plate
+           width: parent.width; height: parent.height
+           fillMode: Image.PreserveAspectFit
+           sourceSize.width: 1024
+           sourceSize.height: 1024
+           source: "qrc:/pomodoroImg.png"
+       }*/
        property alias timeValue: time.text
+
        gradient: Gradient {
            GradientStop {
                position: 0.497
@@ -36,6 +50,7 @@ Item
         {
            id: time
            anchors.centerIn: parent
+           anchors.verticalCenterOffset: 16
            width: 164
            height: 43
            color: "#0c4e08"
@@ -45,7 +60,7 @@ Item
            font.family: "Tahoma"
            horizontalAlignment: Text.AlignHCenter
            verticalAlignment: Text.AlignVCenter
-           font.pixelSize: 50
+           font.pixelSize: 70
         }
 
         Item
@@ -63,10 +78,18 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.top
                 anchors.bottomMargin: -10
-                enabled: clock.running ? false : true
+                enabled: ((pomodoro.state === "Reset" ||
+                          pomodoro.state === "Stop")
+                          ? true : false)
                 onClicked:
                 {
-                    resetIntervalValues(intervalListView.model.get(intervalListView.currentIndex))
+                    if (pomodoro.state === "Reset" ||
+                         pomodoro.state === "Stop")
+                    {
+                        pomodoro.state = "Reset"
+                        playAlarm.stop()
+                        resetIntervalValues(intervalListView.model.get(intervalListView.currentIndex))
+                    }
                 }
             }
         }
@@ -88,8 +111,7 @@ Item
                 anchors.bottomMargin: -10
                 onClicked:
                 {
-                    clock.running = true;
-                    changeIntervalOpacity()
+                    pomodoro.state = "Active"
                 }
             }
         }
@@ -111,7 +133,7 @@ Item
                 anchors.bottomMargin: -10
                 onClicked:
                 {
-                    clock.running = false;
+                    pomodoro.state = "Stop"
                 }
             }
         }
@@ -139,14 +161,12 @@ Item
             {
                 name: model.intname
                 active: model.activestate
-                Layout.fillWidth: true
-                Layout.fillHeight: true
                 MouseArea
                 {
                     anchors.fill: parent
                     onClicked:
                     {
-                        if (!clock.running)
+                        if (pomodoro.state === "Reset")
                         {
                             intervalListView.currentIndex = index
                         }
@@ -157,21 +177,32 @@ Item
 
         ListView {
             id: intervalListView
+            boundsBehavior: Flickable.StopAtBounds
+            visible: true
             Layout.alignment: Qt.AlignCenter
-            spacing: 5
+            spacing: width/3
             width: plate.width/2
+            scale: 1
             antialiasing: true
             anchors.verticalCenterOffset: -75
             anchors.verticalCenter: plate.verticalCenter
             anchors.horizontalCenter: plate.horizontalCenter
-            snapMode: ListView.NoSnap
-            interactive: false
+            interactive: true
             layoutDirection: Qt.LeftToRight
             orientation: ListView.Horizontal
             model: intervalModel
             delegate: intervalDelegate
             focus: true
-            Component.onCompleted: currentIndex = 0
+            currentIndex: 0
+
+            Component.onCompleted:
+            {
+              currentIndex: 0
+              model.get(currentIndex).activestate = true;
+              resetIntervalValues(model.get(currentIndex))
+              positionViewAtIndex(1, ListView.Center)
+            }
+
             onCurrentIndexChanged:
             {
                 for (var idx = 0; idx < intervalListView.count; idx++)
@@ -187,10 +218,11 @@ Item
                     }
                 }
 
-                if (currentIndex < intervalListView.count && currentIndex >= 0)
+                if (currentIndex >= 0 && currentIndex < intervalListView.count)
                 {
                     resetIntervalValues(model.get(currentIndex))
                 }
+                positionViewAtIndex(1, ListView.Center)
             }
         }
 
@@ -236,19 +268,54 @@ Item
                               GlobalSettings.main.pomodoroIntervalTimeSec)
                 break;
         }
-        changeIntervalOpacity()
     }
 
-    function changeIntervalOpacity()
+    //machine state
+    states: [
+        State {
+            name: "Active"
+            PropertyChanges {
+                target: clock
+                running: true
+            }
+            PropertyChanges {
+                target: intervalListView
+                opacity: 0.5
+            }
+        },
+        State {
+            name: "Stop"
+            PropertyChanges {
+                target: clock
+                running: false
+            }
+            PropertyChanges {
+                target: intervalListView
+                opacity: 0.5
+            }
+        },
+        State {
+            name: "Reset"
+            PropertyChanges {
+                target: clock
+                running: false
+            }
+            PropertyChanges {
+                target: intervalListView
+                opacity: 1
+            }
+        }
+    ]
+
+
+    MediaPlayer
     {
-        if (clock.running)
-        {
-            intervalListView.opacity = 0.5
-        }
-        else
-        {
-            intervalListView.opacity = 1
-        }
+        id: playAlarm
+        loops: MediaPlayer.Infinite
+        source: "qrc:/sounds/sound0.mp3"
+        volume: QtMultimedia.convertVolume(GlobalSettings.main.alarmVolume / 100.0,
+                                           QtMultimedia.LogarithmicVolumeScale,
+                                           QtMultimedia.LinearVolumeScale)
     }
 
     Clock
@@ -257,7 +324,8 @@ Item
         running: false
         onTimePassed:
         {
-            changeIntervalOpacity()
+            pomodoro.state = "Stop"
+            playAlarm.play()
         }
     }
 }

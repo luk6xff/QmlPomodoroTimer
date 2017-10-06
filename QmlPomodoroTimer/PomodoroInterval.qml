@@ -3,7 +3,7 @@ import QtQuick 2.0
 Item {
     id: interval
     height: rect.height + name.height
-    width: col.width = rect.width > name.width ? rect.width : name.width
+    width: rect.width
     property alias radius: rect.radius
     property alias active: rect.enabled
     property string name: ""
@@ -17,9 +17,9 @@ Item {
         Rectangle
         {
             id: rect
-            height: 20
-            width: 20
-            radius: 10
+            height: 30
+            width: 30
+            radius: 15
             enabled: false
             color: enabled ? activeColor : inactiveColor
             onEnabledChanged:

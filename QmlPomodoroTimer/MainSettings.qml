@@ -4,6 +4,7 @@ import QtQuick.Dialogs 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.0
 import Qt.labs.settings 1.0
+import QtQuick.Controls.Styles 1.4
 import "."
 
 Item {
@@ -24,6 +25,7 @@ Item {
         GlobalSettings.main.longBreakIntervalTimeSec = longBreakAlarmValue.sec
         GlobalSettings.main.countModeIdx = countMode.currentIndex
         GlobalSettings.main.countMode = countMode.textAt(countMode.currentIndex)
+        GlobalSettings.main.alarmVolume = alarmVolume.value
     }
 
     ScrollView {
@@ -36,7 +38,7 @@ Item {
             leftMargin: 12
         }
         ColumnLayout {
-            spacing: 15
+            spacing: 20
             Item {
                 Layout.preferredHeight: 4
             }
@@ -88,6 +90,42 @@ Item {
                         min: GlobalSettings.main.longBreakIntervalTimeMin
                         sec: GlobalSettings.main.longBreakIntervalTimeSec
                         name: "Long break alarm time"
+                    }
+                }
+                RowLayout {
+                    spacing: 40
+                    Label {
+                        text: "Alarm volume: "
+                    }
+                    Slider {
+                        id: alarmVolume
+                        value: GlobalSettings.main.alarmVolume
+                        maximumValue: 100
+                        width: 200
+                        stepSize : 1
+                        style: SliderStyle {
+                            groove: Rectangle {
+                                implicitWidth: 200
+                                implicitHeight: 8
+                                color: "gray"
+                                radius: 8
+                            }
+                            handle: Rectangle {
+                                anchors.centerIn: parent
+                                color: control.pressed ? "white" : "lightgreen"
+                                border.color: "gray"
+                                border.width: 1
+                                implicitWidth: 30
+                                implicitHeight: 30
+                                radius: 13
+                                Text
+                                {
+                                    anchors.centerIn: parent
+                                    text: alarmVolume.value
+                                    font.pointSize: 10
+                                }
+                            }
+                        }
                     }
                 }
             }

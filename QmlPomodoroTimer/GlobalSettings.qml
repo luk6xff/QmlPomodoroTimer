@@ -17,6 +17,7 @@ QtObject
         property int longBreakIntervalTimeSec: 0
         property int countModeIdx: 0
         property string countMode: "UP"
+        property int alarmVolume: 30
     }
 
     property Settings colors:
