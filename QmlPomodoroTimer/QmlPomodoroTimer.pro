@@ -29,6 +29,8 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+#ICON = resources/pomodoroImg.ico
+
 DISTFILES += \
     ClockButton.qml \
     ../../../pomodoro_main.png \
@@ -44,4 +46,5 @@ DISTFILES += \
     ColorsSettings.qml \
     MainSettingsIntervalTime.qml \
     qmldir \
-    ColorsSettingsItem.qml
+    ColorsSettingsItem.qml \
+    OtherSettings.qml

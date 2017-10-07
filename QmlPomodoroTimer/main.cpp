@@ -1,5 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QIcon>
 
 int main(int argc, char *argv[])
 {
@@ -7,9 +8,8 @@ int main(int argc, char *argv[])
    app.setOrganizationName("luktech");
    app.setOrganizationDomain("luktech.com");
    app.setApplicationName("QMLPomodoroTimer");
+   app.setWindowIcon(QIcon(":/pomodoroImg.png"));
 
-   //register singletons
-   //qmlRegisterSingletonType( QUrl("qrc:/GlobalSettings.qml"), "QmlPomodoroTimer.GlobalSettings", 1, 0, "GlobalSettings");
    QQmlApplicationEngine engine;
    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 

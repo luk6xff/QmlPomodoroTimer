@@ -34,11 +34,10 @@ Item {
             if (colorDialogForId != null)
             {
                colorDialogForId.color = color
-                console.log("JJDJD")
             }
         }
         onRejected: {
-            console.log("Rejected")
+            //console.log("Rejected")
         }
     }
 

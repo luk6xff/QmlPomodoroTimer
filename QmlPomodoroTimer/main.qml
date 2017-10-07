@@ -12,6 +12,9 @@ Window
     flags: Qt.FramelessWindowHint | Qt.WA_TranslucentBackground
     color: "#00000000"
     title: qsTr("QmlPomodoroTimer")
+    readonly property string appVersion: "1.0.0"
+    readonly property string appYear: "October 2017"
+    readonly property string appAuthor: "Lukasz Uszko aka igbt6 [lukasz.uszko@gmail.com]"
 
     PomodoroTimer
     {

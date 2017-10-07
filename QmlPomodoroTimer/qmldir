@@ -1,2 +1,2 @@
-#module QmlPomodoroTimer.GlobalSettings
+module QmlPomodoroTimer
 singleton GlobalSettings 1.0 GlobalSettings.qml
