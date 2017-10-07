@@ -10,41 +10,40 @@ import "PomodoroUtils.js" as Utils
 Item
 {
     id: pomodoro
-    anchors.fill: parent
-    state: "Reset"
+    state: ""
 
     Rectangle
     {
-       id : plate
-       anchors.centerIn: parent
-       width: 280
-       height: 280
-       radius: 140
-       anchors.verticalCenterOffset: 0
-       anchors.horizontalCenterOffset: 0
-       /*Image {
-           id: pomodoroImg
-           anchors.fill: plate
-           anchors.centerIn: plate
-           width: parent.width; height: parent.height
-           fillMode: Image.PreserveAspectFit
-           sourceSize.width: 1024
-           sourceSize.height: 1024
-           source: "qrc:/pomodoroImg.png"
-       }*/
-       property alias timeValue: time.text
+        id : plate
+        property alias timeValue: time.text
+        anchors.centerIn: parent
+        width: 280
+        height: 280
+        radius: 140
 
-       gradient: Gradient {
+        gradient: Gradient {
            GradientStop {
                position: 0.497
                color: "#f24444"
            }
 
            GradientStop {
-               position: 1
-               color: "#000000"
+               position: 0.813
+               color: "red"
            }
-       }
+        }
+
+        Image {
+           id: pomodoroImg
+           anchors.centerIn: parent
+           Layout.preferredWidth: plate.width
+           Layout.preferredHeight:  plate.height
+           antialiasing: true
+           smooth: true
+           fillMode:Image.PreserveAspectFit
+           source: "qrc:/pomodoroImg.png"
+           anchors.verticalCenterOffset: -28
+        }
 
         Text
         {

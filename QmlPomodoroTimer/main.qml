@@ -7,7 +7,7 @@ Window
     id: root
     visible: true
     width: 300
-    height: 350
+    height: 400
 
     flags: Qt.FramelessWindowHint | Qt.WA_TranslucentBackground
     color: "#00000000"
@@ -16,6 +16,7 @@ Window
     PomodoroTimer
     {
         anchors.centerIn: parent
+        state: "Reset"
     }
 
     MouseArea
