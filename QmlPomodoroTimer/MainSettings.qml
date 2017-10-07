@@ -37,11 +37,19 @@ Item {
             bottom: bottomBar.top
             leftMargin: 12
         }
+
         ColumnLayout {
-            spacing: 20
+            spacing: 10
+
             Item {
-                Layout.preferredHeight: 4
+                Layout.preferredHeight: 1
             }
+
+            Label {
+                font.bold: true
+                text: "Main Settings"
+            }
+
             CheckBox {
                 id: automaticStartOfnextInterval
                 text: "Autostart of next interval"

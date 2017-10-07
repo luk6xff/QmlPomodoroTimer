@@ -1,6 +1,7 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Dialogs 1.1
+import "."
 
 Item {
     width: 320
@@ -8,15 +9,33 @@ Item {
     SystemPalette { id: palette }
     clip: true
 
+    function saveSettings()
+    {
+        GlobalSettings.colors.timerColor = timerColor.color
+        GlobalSettings.colors.activeIntervalColor = activeIntervalColor.color
+        GlobalSettings.colors.inactiveIntervalColor = inactiveIntervalColor.color
+        GlobalSettings.colors.buttonsColor = buttonsColor.color
+    }
+
+    property var colorDialogForId: null
+    function openColorDialogForId(id)
+    {
+        colorDialogForId = id
+        colorDialog.open()
+    }
+
     ColorDialog {
         id: colorDialog
-        visible: colorDialogVisible.checked
-        modality: colorDialogModal.checked ? Qt.WindowModal : Qt.NonModal
+        modality: Qt.WindowModal
         title: root.title + " - color settings"
-        color: "green"
-        showAlphaChannel: colorDialogAlpha.checked
+        color: "black"
+        showAlphaChannel: true
         onAccepted: {
-            console.log("Accepted: " + color)
+            if (colorDialogForId != null)
+            {
+               colorDialogForId.color = color
+                console.log("JJDJD")
+            }
         }
         onRejected: {
             console.log("Rejected")
@@ -27,44 +46,45 @@ Item {
         anchors.fill: parent
         anchors.margins: 12
         spacing: 8
+
         Label {
             font.bold: true
             text: "Color Settings"
         }
-        CheckBox {
-            id: colorDialogModal
-            text: "Modal"
-            checked: true
-            Binding on checked { value: colorDialog.modality != Qt.NonModal }
-        }
-        CheckBox {
-            id: colorDialogAlpha
-            text: "Show alpha channel"
-            Binding on checked { value: colorDialog.showAlphaChannel }
-        }
-        CheckBox {
-            id: colorDialogVisible
-            text: "Visible"
-            Binding on checked { value: colorDialog.visible }
-        }
-        Row {
-            id: colorRow
-            spacing: parent.spacing
-            height: colorLabel.implicitHeight * 2.0
-            Rectangle {
-                color: colorDialog.color
-                height: parent.height
-                width: height * 2
-                border.color: "black"
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: colorDialog.open()
-                }
+
+        ColorsSettingsItem {
+            id: timerColor
+            color: GlobalSettings.colors.timerColor
+            title: "Timer Color"
+            onClick: {
+                openColorDialogForId(this)
             }
-            Label {
-                id: colorLabel
-                text: "<b>current color:</b> " + colorDialog.color
-                anchors.verticalCenter: parent.verticalCenter
+        }
+
+        ColorsSettingsItem {
+            id: activeIntervalColor
+            color: GlobalSettings.colors.activeIntervalColor
+            title: "ActiveInterval Color"
+            onClick: {
+                openColorDialogForId(this)
+            }
+        }
+
+        ColorsSettingsItem {
+            id: inactiveIntervalColor
+            color: GlobalSettings.colors.inactiveIntervalColor
+            title: "InactiveInterval Color"
+            onClick: {
+                openColorDialogForId(this)
+            }
+        }
+
+        ColorsSettingsItem {
+            id: buttonsColor
+            color: GlobalSettings.colors.buttonsColor
+            title: "Button Color"
+            onClick: {
+                openColorDialogForId(this)
             }
         }
     }
@@ -87,14 +107,14 @@ Item {
             height: implicitHeight
             width: parent.width
             Button {
-                text: "Open"
+                text: "Save"
                 anchors.verticalCenter: parent.verticalCenter
-                onClicked: colorDialog.open()
+                onClicked: saveSettings()
             }
             Button {
                 text: "Close"
                 anchors.verticalCenter: parent.verticalCenter
-                onClicked: colorDialog.close()
+                onClicked: close()
             }
         }
     }

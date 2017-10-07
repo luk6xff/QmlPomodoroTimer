@@ -43,4 +43,5 @@ DISTFILES += \
     MainSettings.qml \
     ColorsSettings.qml \
     MainSettingsIntervalTime.qml \
-    qmldir
+    qmldir \
+    ColorsSettingsItem.qml

@@ -23,7 +23,10 @@ QtObject
     property Settings colors:
     Settings
     {
-        //TODO
+        property string timerColor: "#0c4e08"
+        property string activeIntervalColor: "green"
+        property string inactiveIntervalColor: "blue"
+        property string buttonsColor: "#7e87f8"
     }
 
 }

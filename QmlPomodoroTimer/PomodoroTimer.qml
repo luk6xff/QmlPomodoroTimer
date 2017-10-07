@@ -2,8 +2,9 @@ import QtQuick 2.8
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 2.1
 import QtMultimedia 5.8
-import "."
 import "PomodoroUtils.js" as Utils
+import "."
+
 
 
 
@@ -52,7 +53,7 @@ Item
            anchors.verticalCenterOffset: 16
            width: 164
            height: 43
-           color: "#0c4e08"
+           color: GlobalSettings.colors.timerColor
            text: Utils.formatDisplayedTime(clock.minutes, clock.seconds)
            font.capitalization: Font.Capitalize
            font.bold: true
@@ -61,11 +62,15 @@ Item
            verticalAlignment: Text.AlignVCenter
            font.pixelSize: 70
         }
+        Item
+        {
+            id: buttons
+            property var buttonBaseColor: GlobalSettings.colors.buttonsColor
 
         Item
         {
-            height: parent.height/2
-            x: parent.width/2
+            height: plate.height/2
+            x: plate.width/2
             y: 0
             transformOrigin: Item.Bottom
             rotation: 0
@@ -74,6 +79,7 @@ Item
             {
                 id: resetButton
                 buttonText: "Reset"
+                baseColor: buttons.buttonBaseColor
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.top
                 anchors.bottomMargin: -10
@@ -95,8 +101,8 @@ Item
 
         Item
         {
-            height: parent.height/2
-            x: parent.width/2
+            height: plate.height/2
+            x: plate.width/2
             y: 0
             transformOrigin: Item.Bottom
             rotation: 40
@@ -105,6 +111,7 @@ Item
             {
                 id: startButton
                 buttonText: "Start"
+                baseColor: buttons.buttonBaseColor
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.top
                 anchors.bottomMargin: -10
@@ -117,8 +124,8 @@ Item
 
         Item
         {
-            height: parent.height/2
-            x: parent.width/2
+            height: plate.height/2
+            x: plate.width/2
             y: 0
             transformOrigin: Item.Bottom
             rotation: -40
@@ -127,6 +134,7 @@ Item
             {
                 id: stopButton
                 buttonText: "Stop"
+                baseColor: buttons.buttonBaseColor
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.top
                 anchors.bottomMargin: -10
@@ -136,6 +144,7 @@ Item
                 }
             }
         }
+                }
 
         ListModel
         {
@@ -160,6 +169,8 @@ Item
             {
                 name: model.intname
                 active: model.activestate
+                activeColor: GlobalSettings.colors.activeIntervalColor
+                inactiveColor: GlobalSettings.colors.inactiveIntervalColor
                 MouseArea
                 {
                     anchors.fill: parent
