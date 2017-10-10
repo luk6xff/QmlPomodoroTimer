@@ -50,6 +50,7 @@ Item
            id: time
            anchors.centerIn: parent
            anchors.verticalCenterOffset: 16
+           visible: true
            width: 164
            height: 43
            color: GlobalSettings.colors.timerColor
@@ -82,18 +83,10 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.top
                 anchors.bottomMargin: -10
-                enabled: ((pomodoro.state === "Reset" ||
-                          pomodoro.state === "Stop")
-                          ? true : false)
+                enabled: (pomodoro.state === "Active") ? false : true
                 onClicked:
                 {
-                    if (pomodoro.state === "Reset" ||
-                         pomodoro.state === "Stop")
-                    {
-                        pomodoro.state = "Reset"
-                        playAlarm.stop()
-                        resetIntervalValues(intervalListView.model.get(intervalListView.currentIndex))
-                    }
+                    pomodoro.state = "Reset"
                 }
             }
         }
@@ -114,6 +107,7 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.top
                 anchors.bottomMargin: -10
+                enabled: (pomodoro.state === "Alarm") ? false : true
                 onClicked:
                 {
                     pomodoro.state = "Active"
@@ -137,6 +131,7 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.bottom: parent.top
                 anchors.bottomMargin: -10
+                enabled: (pomodoro.state === "Alarm") ? false : true
                 onClicked:
                 {
                     pomodoro.state = "Stop"
@@ -291,6 +286,10 @@ Item
                 target: intervalListView
                 opacity: 0.5
             }
+            PropertyChanges {
+                target: time
+                visible: true
+            }
         },
         State {
             name: "Stop"
@@ -300,7 +299,22 @@ Item
             }
             PropertyChanges {
                 target: intervalListView
-                opacity: 0.5
+                opacity: intervalListView.opacity
+            }
+            PropertyChanges {
+                target: time
+                visible: true
+            }
+        },
+        State {
+            name: "Alarm"
+            PropertyChanges {
+                target: clock
+                running: false
+            }
+            PropertyChanges {
+                target: blinkClockTimer
+                running: true
             }
         },
         State {
@@ -312,6 +326,21 @@ Item
             PropertyChanges {
                 target: intervalListView
                 opacity: 1
+            }
+            PropertyChanges {
+                target: blinkClockTimer
+                running: false
+            }
+            PropertyChanges {
+                target: time
+                visible: true
+            }
+            StateChangeScript {
+                name: "resetCalls"
+                script: {
+                    playAlarm.stop()
+                    resetIntervalValues(intervalListView.model.get(intervalListView.currentIndex))
+                }
             }
         }
     ]
@@ -327,13 +356,25 @@ Item
                                            QtMultimedia.LinearVolumeScale)
     }
 
+    Timer
+    {
+        id: blinkClockTimer
+        interval: 500 // [ms]
+        repeat: true
+        running: false
+        onTriggered:
+        {
+            time.visible = time.visible ? false : true
+        }
+    }
+
     Clock
     {
         id: clock
         running: false
         onTimePassed:
         {
-            pomodoro.state = "Stop"
+            pomodoro.state = "Alarm"
             playAlarm.play()
         }
     }
