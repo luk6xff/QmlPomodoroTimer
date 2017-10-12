@@ -11,5 +11,6 @@ Install [QT5.8 SDK](https://download.qt.io/official_releases/qt/5.8/5.8.0/) and 
 * Executables:
 You can download the latest and greatest version from: https://github.com/igbt6/QmlPomodoroTimer/releases
 
-* How it looks like: 
-![alt text](https://github.com/igbt6/QmlPomodoroTimer/blob/master/img.png "Pomodoro timer in the bottom right corner")
+* Some views of the app: 
+![alt text](https://github.com/igbt6/QmlPomodoroTimer/blob/master/img1.png "Pomodoro timer in the bottom right corner")
+![alt text](https://github.com/igbt6/QmlPomodoroTimer/blob/master/img2.png "Settings view")
