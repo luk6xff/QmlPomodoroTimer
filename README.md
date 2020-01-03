@@ -6,7 +6,7 @@ This simple and small app will help you to follow the populat time management te
 You can easily modify the interval time values and an appearance of your timer from the settings menu (right click on the timer view).
 
 * Development:
-Install [QT5.8 SDK](https://download.qt.io/official_releases/qt/5.8/5.8.0/) and open the **.pro** file under QtCreator. Build the project.
+Install [QT5.8 SDK](https://download.qt.io/archive/qt/5.8/) and open the **.pro** file under QtCreator. Build the project.
 
 * Executables:
 You can download the latest and greatest version from: https://github.com/luk6xff/QmlPomodoroTimer/releases
