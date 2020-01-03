@@ -9,8 +9,8 @@ You can easily modify the interval time values and an appearance of your timer f
 Install [QT5.8 SDK](https://download.qt.io/official_releases/qt/5.8/5.8.0/) and open the **.pro** file under QtCreator. Build the project.
 
 * Executables:
-You can download the latest and greatest version from: https://github.com/igbt6/QmlPomodoroTimer/releases
+You can download the latest and greatest version from: https://github.com/luk6xff/QmlPomodoroTimer/releases
 
 * Some views of the app: 
-![alt text](https://github.com/igbt6/QmlPomodoroTimer/blob/master/img1.png "Pomodoro timer in the bottom right corner")
-![alt text](https://github.com/igbt6/QmlPomodoroTimer/blob/master/img2.png "Settings view")
+![alt text](https://github.com/luk6xff/QmlPomodoroTimer/blob/master/img1.png "Pomodoro timer in the bottom right corner")
+![alt text](https://github.com/luk6xff/QmlPomodoroTimer/blob/master/img2.png "Settings view")
