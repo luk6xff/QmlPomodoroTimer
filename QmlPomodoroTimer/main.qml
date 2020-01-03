@@ -14,7 +14,7 @@ Window
     title: qsTr("QmlPomodoroTimer")
     readonly property string appVersion: "1.0.0"
     readonly property string appYear: "October 2017"
-    readonly property string appAuthor: "Lukasz Uszko aka igbt6 [lukasz.uszko@gmail.com]"
+    readonly property string appAuthor: "Lukasz Uszko aka luk6xff [lukasz.uszko@gmail.com]"
 
     PomodoroTimer
     {
